@@ -1,7 +1,11 @@
 import cv2
 import mediapipe as mp
 import time
+"""
 
+Module for hand and finger tracker with keypoints
+
+"""
 
 # noinspection PyUnresolvedReferences
 class handDetector():

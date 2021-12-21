@@ -4,6 +4,10 @@ import time
 
 
 # noinspection PyUnresolvedReferences
+"""
+This is script for resizing image by fingers in hands
+
+"""
 
 def calc_fps(prev_time):
     curr_time = time.time()
