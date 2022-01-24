@@ -1,2 +1,2 @@
 # AI_repo
- Some scripts from my AI journey
+ A sample from my AI journey
