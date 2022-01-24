@@ -5,7 +5,8 @@ import cv2
 """
 
 
-This is my first script from open-cv, so it isnt't clean at all.
+This is my first script in python, so it isnt't clean and 
+understandable at all.
 
 """
 
