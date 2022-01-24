@@ -11,10 +11,10 @@ from keras.layers import Dense, Activation, Conv2D, MaxPool2D, Flatten, Dropout
 
 
 from keras.models import load_model
-	"""
+"""
 	Script of Simple classifier
 	
-	"""
+"""
 
 
 def pars_arguments():
@@ -24,7 +24,7 @@ def pars_arguments():
 
     return parser.parse_args()
 
-
+#function that preparing the data
 def prepare_data(data):
     (X_train, Y_train), (X_test, Y_test) = data
 
@@ -52,7 +52,7 @@ def prepare_data(data):
 
     return train_images, test_images, train_labels, test_labels
 
-
+#define 2 classes of images
 def to_two_classes(y):
     for i in range(len(y)):
         if y[i] == 0 or y[i] == 1 or y[i] == 8 or y[i] == 9:
@@ -73,10 +73,10 @@ def main():
     train_images, test_images, train_labels, test_labels = prepare_data(cifar10.load_data())
     class_names = ['animal', 'vehicle']
 	
-	"""
-	Testing on 3 models with different layers
+"""
+Testing on 3 models with different layers
 	
-	"""
+"""
 
     model = models.Sequential()
     model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 3)))
