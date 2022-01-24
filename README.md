@@ -1,2 +1,2 @@
 # AI_repo
- A sample from my AI journey
+ A sample,simple scripts from my AI journey, rest are private.
