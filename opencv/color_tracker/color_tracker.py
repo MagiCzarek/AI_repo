@@ -2,6 +2,7 @@ import argparse
 import sys
 import numpy as np
 import cv2
+
 """
 
 
@@ -9,6 +10,7 @@ This is my first script in python, so it isnt't clean and
 understandable at all.
 
 """
+
 
 def pars_arguments():
     parser = argparse.ArgumentParser(description='Script for tracking colors on video')
@@ -29,7 +31,7 @@ def pars_arguments():
                                                  'c = reqtangle  and the circle on middle of item,'
                                                  'tracking but you must unpause 1st, the circle is added because'
                                                  'rectangle not always working'
-                                                 'w =  on this button u can see only this color mask' )
+                                                 'w =  on this button u can see only this color mask')
     # parser.add_argument('bar', nargs='+', help='This is a script for tracking colors on video or from camera. If '
     #                                            'If you want to upload video you need to'
     #                                            'execute script by writing'
@@ -62,15 +64,12 @@ def on_click_hsv(event, x, y, flags, param):
         s = hsv[y, x, 1]
         v = hsv[y, x, 2]
         # if(lower_limit is None):
-        lower_limit = np.array([h - 15, s - 80, v-70])
+        lower_limit = np.array([h - 15, s - 80, v - 70])
         # elif(upper_limit is None):
-        upper_limit = np.array([h + 15, s + 80, v+70])
+        upper_limit = np.array([h + 15, s + 80, v + 70])
 
 
-def maskImage(lower_limit, upper_limit, frame):
-    global ret
-    global thresh
-    global color_frame
+def mask_image(lower_limit, upper_limit, frame, kernel):
     mask = cv2.inRange(hsv, lower_limit, upper_limit)
 
     color_frame = cv2.bitwise_and(frame, frame, mask=mask)
@@ -85,9 +84,8 @@ def maskImage(lower_limit, upper_limit, frame):
 
 
 def keys_switcher(key):
-    global show_captured_color
+    show_captured_color = True
     global show_frame
-    global key_return
 
     if key == ord('q'):
         return sys.exit()
@@ -101,6 +99,7 @@ def keys_switcher(key):
         cv2.waitKey(-1)
 
 
+# noinspection PyGlobalUndefined
 def main(input_file):
     print(input_file)
     if input_file == 0:
@@ -108,28 +107,25 @@ def main(input_file):
     else:
         video = cv2.VideoCapture(input_file)
 
-    global lower_limit
-    global upper_limit
-    lower_limit = None
-    upper_limit = None
-
-    global default_limit
-    default_limit = np.array([0, 0, 0])
-
-    global show_captured_color
-    show_captured_color = False
-    global show_frame
-    show_frame = False
-
-    global key
-
     global colorB
     global colorG
     global colorR
+    global default_limit
+    global lobal
+    global show_captured_color
+    global show_frame
+
+    lower_limit = None
+    upper_limit = None
+
+    default_limit = np.array([0, 0, 0])
+
+    show_captured_color = False
+
+    show_frame = False
 
     frame_name = input_file.split('.')[0]
 
-    global kernel
     kernel = np.ones((2, 2), np.uint8)
 
     video_view, frame = video.read()
@@ -139,9 +135,9 @@ def main(input_file):
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
         if (upper_limit is None and lower_limit is None):
-            color_frame, thresh, ret = maskImage(default_limit, default_limit, frame)
+            color_frame, thresh, ret = maskImage(default_limit, default_limit, frame, kernel)
         else:
-            color_frame, thresh, ret = maskImage(lower_limit, upper_limit, frame)
+            color_frame, thresh, ret = maskImage(lower_limit, upper_limit, frame, kernel)
 
         M = cv2.moments(thresh)
 
@@ -161,7 +157,6 @@ def main(input_file):
 
                 else:
                     cX, cY = 0, 0
-
 
                 cv2.circle(frame, (cX, cY), 1, (255, 255, 255), -1)
                 x, y, w, h = cv2.boundingRect(cnt)
